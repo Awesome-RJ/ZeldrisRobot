@@ -204,10 +204,9 @@ def twrp(update, context):
 @typing_action
 def orangefox(update, _):
     message = update.effective_message
-    devices = message.text[len("/orangefox ") :]
     btn = ""
 
-    if devices:
+    if devices := message.text[len("/orangefox ") :]:
         link = get(
             f"https://api.orangefox.download/v3/releases/?codename={devices}&sort=date_desc&limit=1"
         )

@@ -66,7 +66,6 @@ def num_chats():
 
 def migrate_chat(old_chat_id, new_chat_id):
     with INSERTION_LOCK:
-        chat = SESSION.query(Rules).get(str(old_chat_id))
-        if chat:
+        if chat := SESSION.query(Rules).get(str(old_chat_id)):
             chat.chat_id = str(new_chat_id)
         SESSION.commit()

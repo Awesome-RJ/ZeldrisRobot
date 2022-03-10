@@ -368,8 +368,7 @@ def invite(update, context):
     msg = update.effective_message
     chat = update.effective_chat
 
-    conn = connected(bot, update, chat, user.id, need_admin=True)
-    if conn:
+    if conn := connected(bot, update, chat, user.id, need_admin=True):
         chat = dispatcher.bot.getChat(conn)
     else:
         if msg.chat.type == "private":

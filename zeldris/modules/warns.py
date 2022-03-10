@@ -161,8 +161,7 @@ def warn(
 def button(update, _):
     query = update.callback_query  # type: Optional[CallbackQuery]
     user = update.effective_user  # type: Optional[User]
-    match = re.match(r"rm_warn\((.+?)\)", query.data)
-    if match:
+    if match := re.match(r"rm_warn\((.+?)\)", query.data):
         user_id = match.group(1)
         chat = update.effective_chat  # type: Optional[Chat]
         res = sql.remove_warn(user_id, chat.id)
@@ -232,9 +231,7 @@ def reset_warns(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     args = context.args
-    user_id = extract_user(message, args)
-
-    if user_id:
+    if user_id := extract_user(message, args):
         sql.reset_warns(user_id, chat.id)
         message.reply_text("Warnings have been reset!")
         warned = chat.get_member(user_id).user
@@ -262,9 +259,7 @@ def remove_warns(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     args = context.args
-    user_id = extract_user(message, args)
-
-    if user_id:
+    if user_id := extract_user(message, args):
         sql.remove_warn(user_id, chat.id)
         message.reply_text("Last warn has been removed!")
         warned = chat.get_member(user_id).user
@@ -415,7 +410,7 @@ def reply_filter(update, _) -> str:
         return ""
 
     for keyword in chat_warn_filters:
-        pattern = r"( |^|[^\w])" + re.escape(keyword) + r"( |$|[^\w])"
+        pattern = f"( |^|[^\\w]){re.escape(keyword)}( |$|[^\\w])"
         if re.search(pattern, to_match, flags=re.IGNORECASE):
             user = update.effective_user  # type: Optional[User]
             warn_filter = sql.get_warn_filter(chat.id, keyword)
@@ -430,8 +425,7 @@ def set_warn_limit(update, context) -> str:
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     msg = update.effective_message  # type: Optional[Message]
-    args = context.args
-    if args:
+    if args := context.args:
         if args[0].isdigit():
             if int(args[0]) < 3:
                 msg.reply_text("The minimum warn limit is 3!")
@@ -463,8 +457,7 @@ def set_warn_strength(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
     msg = update.effective_message  # type: Optional[Message]
-    args = context.args
-    if args:
+    if args := context.args:
         if args[0].lower() in ("on", "yes"):
             sql.set_warn_strength(chat.id, False)
             msg.reply_text("Too many warns will now result in a ban!")
