@@ -177,9 +177,7 @@ def report(update, context) -> str:
                     pass
                 except BadRequest as excp:  # TODO: cleanup exceptions
                     if excp.message != "Message_id_invalid":
-                        LOGGER.exception(
-                            "Exception while reporting user " + excp.message
-                        )
+                        LOGGER.exception(f"Exception while reporting user {excp.message}")
 
         message.reply_to_message.reply_text(reported, parse_mode=ParseMode.HTML)
         return msg

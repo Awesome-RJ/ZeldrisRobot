@@ -450,8 +450,7 @@ def user_demote_fed(update, context):
 def fed_info(update, context):
     chat = update.effective_chat  # type: Optional[Chat]
     user = update.effective_user  # type: Optional[User]
-    args = context.args
-    if args:
+    if args := context.args:
         fed_id = args[0]
     else:
         fed_id = sql.get_fed_id(chat.id)
@@ -467,7 +466,7 @@ def fed_info(update, context):
 
     owner = context.bot.get_chat(info["owner"])
     try:
-        owner_name = owner.first_name + " " + owner.last_name
+        owner_name = f'{owner.first_name} {owner.last_name}'
     except BaseException:
         owner_name = owner.first_name
     FEDADMIN = sql.all_fed_users(fed_id)
@@ -524,7 +523,7 @@ def fed_admin(update, context):
     text += "👑 Owner:\n"
     owner = context.bot.get_chat(info["owner"])
     try:
-        owner_name = owner.first_name + " " + owner.last_name
+        owner_name = f'{owner.first_name} {owner.last_name}'
     except BaseException:
         owner_name = owner.first_name
     text += " • {}\n".format(mention_html(owner.id, owner_name))

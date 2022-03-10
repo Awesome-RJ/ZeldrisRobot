@@ -65,9 +65,7 @@ def mute(update, context):
         message.reply_text("Yeahh... I'm not muting myself!")
         return ""
 
-    member = chat.get_member(int(user_id))
-
-    if member:
+    if member := chat.get_member(int(user_id)):
         if is_user_admin(chat, user_id, member=member):
             message.reply_text("Well i'm not gonna stop an admin from talking!")
 

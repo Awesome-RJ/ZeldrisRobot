@@ -58,8 +58,7 @@ from zeldris.modules.helper_funcs.filters import CustomFilters
 @typing_action
 def get_id(update, context):
     args = context.args
-    user_id = extract_user(update.effective_message, args)
-    if user_id:
+    if user_id := extract_user(update.effective_message, args):
         if (
             update.effective_message.reply_to_message
             and update.effective_message.reply_to_message.forward_from
@@ -146,8 +145,7 @@ def info(update, context):
     )
 
     try:
-        sw = spamwtc.get_ban(int(user.id))
-        if sw:
+        if sw := spamwtc.get_ban(int(user.id)):
             text += "\n\n<b>This person is banned in Spamwatch!</b>"
             text += f"\nResason: <pre>{sw.reason}</pre>"
     except BaseException:
@@ -291,7 +289,7 @@ def markdown_help(update, _):
 def wiki(update, context):
     kueri = re.split(pattern="wiki", string=update.effective_message.text)
     wikipedia.set_lang("en")
-    if len(str(kueri[1])) == 0:
+    if not str(kueri[1]):
         update.effective_message.reply_text("Enter keywords!")
     else:
         try:
@@ -460,10 +458,10 @@ def rmemes(update, context):
         return
     res = res.json()
 
-    rpage = res.get(str("subreddit"))  # Subreddit
-    title = res.get(str("title"))  # Post title
-    memeu = res.get(str("url"))  # meme pic url
-    plink = res.get(str("postLink"))
+    rpage = res.get("subreddit")
+    title = res.get("title")
+    memeu = res.get("url")
+    plink = res.get("postLink")
 
     caps = f"× <b>Title</b>: {title}\n"
     caps += f"× <b>Subreddit:</b> <pre>r/{rpage}</pre>"
